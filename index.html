@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NLP Pipeline Visualizer</title>
+    <link rel="stylesheet" href="styles.css">
+    <!-- D3.js for visualizations -->
+    <script src="https://d3js.org/d3.v7.min.js"></script>
+    <!-- TensorFlow.js for NLP models -->
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/universal-sentence-encoder"></script>
+</head>
+<body>
+    <header>
+        <h1>NLP Pipeline Visualizer</h1>
+        <p class="subtitle">An interactive visualization of Natural Language Processing pipelines</p>
+    </header>
+
+    <div class="container">
+        <div class="input-panel">
+            <h2>Text Input</h2>
+            <div class="text-input-container">
+                <textarea id="text-input" placeholder="Enter text to process through the NLP pipeline...">The quick brown fox jumps over the lazy dog. Natural language processing is fascinating.</textarea>
+                <div class="buttons">
+                    <button id="process-button">Process Text</button>
+                    <button id="clear-button">Clear</button>
+                </div>
+            </div>
+            
+            <h2>Pipeline Settings</h2>
+            <div class="settings">
+                <div class="setting">
+                    <label for="tokenizer-select">Tokenization Method:</label>
+                    <select id="tokenizer-select">
+                        <option value="word">Word Tokenization</option>
+                        <option value="subword">Subword Tokenization</option>
+                        <option value="character">Character Tokenization</option>
+                    </select>
+                </div>
+                
+                <div class="setting">
+                    <label for="embedding-select">Embedding Type:</label>
+                    <select id="embedding-select">
+                        <option value="random">Random Embeddings</option>
+                        <option value="word2vec">Word2Vec-like</option>
+                        <option value="glove">GloVe-like</option>
+                        <option value="contextual">Contextual (BERT-like)</option>
+                    </select>
+                </div>
+                
+                <div class="setting">
+                    <label for="attention-heads">Attention Heads:</label>
+                    <input type="range" id="attention-heads" min="1" max="8" value="4">
+                    <span id="attention-heads-value">4</span>
+                </div>
+                
+                <div class="setting">
+                    <label for="preprocessing-options">Preprocessing Steps:</label>
+                    <div class="checkbox-group">
+                        <label><input type="checkbox" name="preprocessing" value="lowercase" checked> Lowercase</label>
+                        <label><input type="checkbox" name="preprocessing" value="punctuation" checked> Remove Punctuation</label>
+                        <label><input type="checkbox" name="preprocessing" value="stopwords"> Remove Stopwords</label>
+                        <label><input type="checkbox" name="preprocessing" value="stemming"> Stemming</label>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="visualization-panel">
+            <div class="tabs">
+                <button class="tab-button active" data-tab="tokenization">Tokenization</button>
+                <button class="tab-button" data-tab="embedding">Embedding</button>
+                <button class="tab-button" data-tab="attention">Attention</button>
+                <button class="tab-button" data-tab="preprocessing">Preprocessing</button>
+                <button class="tab-button" data-tab="embedding-space">Embedding Space</button>
+                <button class="tab-button" data-tab="prediction">Token Prediction</button>
+            </div>
+            
+            <div class="tab-content">
+                <div id="tokenization" class="tab-pane active">
+                    <h3>Tokenization Visualization</h3>
+                    <div class="visualization-container" id="tokenization-viz"></div>
+                    <div class="explanation">
+                        <p>Tokenization is the process of breaking text into tokens (words, subwords, or characters). Different tokenization methods can significantly impact model performance.</p>
+                    </div>
+                </div>
+                
+                <div id="embedding" class="tab-pane">
+                    <h3>Embedding Visualization</h3>
+                    <div class="visualization-container" id="embedding-viz"></div>
+                    <div class="explanation">
+                        <p>Embeddings are dense vector representations of tokens. They capture semantic relationships between words in a continuous vector space.</p>
+                    </div>
+                </div>
+                
+                <div id="attention" class="tab-pane">
+                    <h3>Attention Pattern Visualization</h3>
+                    <div class="visualization-container" id="attention-viz"></div>
+                    <div class="explanation">
+                        <p>Attention mechanisms allow models to focus on different parts of the input when making predictions. Multi-head attention enables the model to focus on different aspects of the input simultaneously.</p>
+                    </div>
+                </div>
+                
+                <div id="preprocessing" class="tab-pane">
+                    <h3>Preprocessing Comparison</h3>
+                    <div class="visualization-container" id="preprocessing-viz"></div>
+                    <div class="explanation">
+                        <p>Preprocessing steps can significantly affect model performance. This visualization shows how different preprocessing steps transform the input text.</p>
+                    </div>
+                </div>
+                
+                <div id="embedding-space" class="tab-pane">
+                    <h3>Embedding Space Comparison</h3>
+                    <div class="visualization-container" id="embedding-space-viz"></div>
+                    <div class="explanation">
+                        <p>Different embedding methods capture different relationships between words. This visualization compares how words are positioned in different embedding spaces.</p>
+                    </div>
+                </div>
+                
+                <div id="prediction" class="tab-pane">
+                    <h3>Token Prediction Visualization</h3>
+                    <div class="visualization-container" id="prediction-viz"></div>
+                    <div class="explanation">
+                        <p>Language models predict tokens based on context. This visualization shows how predictions are built up token by token.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <footer>
+        <p>NLP Pipeline Visualizer - Academic Project</p>
+        <p>Demonstrates the principles and transformations in Natural Language Processing through interactive visualizations</p>
+    </footer>
+
+    <!-- Scripts -->
+    <script src="nlp-processing.js"></script>
+    <script src="visualizations.js"></script>
+    <script src="app.js"></script>
+</body>
+</html>
