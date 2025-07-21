@@ -138,5 +138,52 @@
     <script src="nlp-processing.js"></script>
     <script src="visualizations.js"></script>
     <script src="app.js"></script>
+    
+    <!-- Inline script for tab switching -->
+    <script>
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log("Setting up tab switching");
+            
+            // Get all tab buttons
+            const tabButtons = document.querySelectorAll('.tab-button');
+            
+            // Add click event listeners to each tab button
+            tabButtons.forEach(function(button) {
+                button.addEventListener('click', function() {
+                    const tabId = this.getAttribute('data-tab');
+                    console.log("Tab clicked:", tabId);
+                    
+                    // Remove active class from all buttons
+                    tabButtons.forEach(function(btn) {
+                        btn.classList.remove('active');
+                    });
+                    
+                    // Add active class to clicked button
+                    this.classList.add('active');
+                    
+                    // Hide all tab panes
+                    document.querySelectorAll('.tab-pane').forEach(function(pane) {
+                        pane.classList.remove('active');
+                        pane.style.display = 'none';
+                    });
+                    
+                    // Show the selected tab pane
+                    const tabPane = document.getElementById(tabId);
+                    
+                    if (tabPane) {
+                        tabPane.classList.add('active');
+                        tabPane.style.display = 'block';
+                        console.log("Activated tab:", tabId);
+                        
+                        // Trigger resize event to ensure visualizations are properly sized
+                        setTimeout(function() {
+                            window.dispatchEvent(new Event('resize'));
+                        }, 300);
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

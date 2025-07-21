@@ -77,51 +77,7 @@ class NLPPipelineApp {
             });
         });
         
-        // Store reference to this for use in event handlers
-        const self = this;
-        
-        // Tab buttons
-        document.querySelectorAll('.tab-button').forEach(button => {
-            button.addEventListener('click', function(e) {
-                console.log("Tab button clicked:", this.getAttribute('data-tab'));
-                
-                // Remove active class from all buttons and panes
-                document.querySelectorAll('.tab-button').forEach(btn => {
-                    btn.classList.remove('active');
-                });
-                
-                document.querySelectorAll('.tab-pane').forEach(pane => {
-                    pane.classList.remove('active');
-                    pane.style.display = 'none';
-                });
-                
-                // Add active class to clicked button
-                this.classList.add('active');
-                
-                // Get the tab ID and activate the corresponding pane
-                const tabId = this.getAttribute('data-tab');
-                const tabPane = document.getElementById(tabId);
-                
-                console.log("Tab ID:", tabId);
-                console.log("Tab pane found:", tabPane ? "Yes" : "No");
-                
-                if (tabPane) {
-                    tabPane.classList.add('active');
-                    tabPane.style.display = 'block';
-                    console.log("Tab pane activated:", tabId);
-                    
-                    // Resize visualizations after tab change
-                    // Use a slightly longer timeout to ensure the tab is fully visible
-                    setTimeout(() => {
-                        console.log("Resizing visualizations for tab:", tabId);
-                        self.resizeVisualizations();
-                    }, 300);
-                }
-                
-                // Prevent default behavior
-                e.preventDefault();
-            });
-        });
+        // Tab switching is handled directly in index.html
     }
     
     updatePreprocessingSettings() {
@@ -159,37 +115,57 @@ class NLPPipelineApp {
     }
     
     updateVisualizations(results) {
+        console.log("Updating visualizations with results:", results);
+        
         try {
-            console.log("Updating visualizations with results:", results);
-            
             // Update tokenization visualization
             console.log("Updating tokenization visualization with:", results.tokenizationResults);
             this.tokenizationViz.update(results.tokenizationResults);
-            
+        } catch (error) {
+            console.error("Error updating tokenization visualization:", error);
+        }
+        
+        try {
             // Update embedding visualization
             console.log("Updating embedding visualization with:", results.embeddingResults);
             this.embeddingViz.update(results.embeddingResults);
-            
+        } catch (error) {
+            console.error("Error updating embedding visualization:", error);
+        }
+        
+        try {
             // Update attention visualization
             console.log("Updating attention visualization with:", results.attentionResults);
             this.attentionViz.update(results.attentionResults, results.tokenizationResults.tokens);
-            
+        } catch (error) {
+            console.error("Error updating attention visualization:", error);
+        }
+        
+        try {
             // Update preprocessing visualization
             console.log("Updating preprocessing visualization with:", results.preprocessingResults);
             this.preprocessingViz.update(results.preprocessingResults);
-            
+        } catch (error) {
+            console.error("Error updating preprocessing visualization:", error);
+        }
+        
+        try {
             // Update embedding space comparison
             console.log("Updating embedding space visualization with tokens:", results.tokenizationResults.tokens);
             this.embeddingSpaceViz.update(this.nlpPipeline, results.tokenizationResults.tokens);
-            
+        } catch (error) {
+            console.error("Error updating embedding space visualization:", error);
+        }
+        
+        try {
             // Update token prediction visualization
             console.log("Updating token prediction visualization with:", results.predictionResults);
             this.tokenPredictionViz.update(results.predictionResults);
-            
-            console.log("All visualizations updated");
         } catch (error) {
-            console.error("Error in updateVisualizations:", error);
+            console.error("Error updating token prediction visualization:", error);
         }
+        
+        console.log("All visualizations updated");
     }
     
     resizeVisualizations() {
